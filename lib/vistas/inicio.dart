@@ -16,7 +16,7 @@ class _InicioPageState extends State<InicioPage> {
   late PageController _pageController;
   int _currentPage = 0;
   final List<Widget> _pageItems = [];
-final int cantidadRecursos = 5; // Cantidad de recursos que deseas mostrar
+  final int cantidadRecursos = 5; // Cantidad de recursos que deseas mostrar
   @override
   void initState() {
     super.initState();
@@ -34,77 +34,100 @@ final int cantidadRecursos = 5; // Cantidad de recursos que deseas mostrar
     _buildPageItems();
     super.didChangeDependencies();
   }
-///// se crean los repositorios aleatorios 
-void _buildPageItems() {
-  const int itemsPerPage =4; // Cantidad de contenedores por página
-  int totalItems = 15; // Total de contenedores en tu lista
-  Random random = Random();
 
-  for (int i = 0; i < totalItems; i += itemsPerPage) {
-    List<Widget> page = [];
+///// se crean los repositorios aleatorios
+  Widget _buildPageItems() {
+    final int itemsPerPage = 4; // Cantidad de contenedores por página
+    final int totalItems = 15; // Total de contenedores en tu lista
+    final Random random = Random();
 
-    for (int j = i; j < i + itemsPerPage; j++) {
-      if (j < totalItems) {
-        Color randomColor = Color.fromARGB(
-          255,
-          random.nextInt(256),
-          random.nextInt(256),
-          random.nextInt(256),
-        );
+    List<Widget> pageItems = [];
 
-        page.add(
-          Expanded(
-            child: Container(
+    for (int i = 0; i < totalItems; i += itemsPerPage) {
+      List<Widget> page = [];
+
+      for (int j = i; j < i + itemsPerPage; j++) {
+        if (j < totalItems) {
+          Color randomColor = Color.fromARGB(
+            255,
+            random.nextInt(256),
+            random.nextInt(256),
+            random.nextInt(256),
+          );
+
+          page.add(
+            Container(
               color: randomColor,
-                child: InkWell(
-                  onTap: () {},
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Image.asset(
-                          'assets/images/logo.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    
-                      Expanded(
-                        flex: 1,
-                        // ignore: avoid_unnecessary_containers
-                        child: Container(
-                          child: const AutoSizeText(
-                          'Nombre del recurso',
-                           style: TextStyle(color: Colors.white),
-                            minFontSize: 5.0, // Tamaño mínimo de la fuente
-                            maxFontSize: double.infinity, // Tamaño máximo de la fuente (se ajustará automáticamente)
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            ),
-                        ),
-                      ),
-                    ],
-                  ),
+              child: InkWell(
+                onTap: () {},
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      'assets/images/logo.png',
+                      fit: BoxFit.cover,
+                    ),
+                    const SizedBox(height: 8.0),
+                    Text(
+                      'Nombre del recurso',
+                      style: TextStyle(fontSize: 10.0, color: Colors.white),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
+          );
+        }
       }
+
+      pageItems.add(
+        ListView(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          children: page,
+        ),
+      );
     }
 
-    _pageItems.add(
-      GridView.count(
-        crossAxisCount: itemsPerPage,
+   return LayoutBuilder(
+  builder: (context, constraints) {
+    final double maxWidth = constraints.maxWidth;
+    final bool isMobile = maxWidth < 400;
+
+    if (isMobile) {
+      return SingleChildScrollView(
+        child: Column(children: pageItems),
+      );
+    } else {
+     
+// Versión para web
+      int columns = (maxWidth / 200).floor(); // Ajusta el número de columnas según tus necesidades
+      double spacing = 8.0; // Espacio entre los contenedores
+      double containerWidth = (maxWidth - (columns - 1) * spacing) / columns;
+      double containerHeight = 250.0; // Ajusta la altura máxima de los contenedores según tus necesidades
+       int maxColumns = maxWidth ~/ containerWidth;
+      return GridView.builder(
         shrinkWrap: true,
-        children: page,
-      ),
-    );
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+         maxCrossAxisExtent: 500, // Ajusta el ancho máximo de cada contenedor
+          mainAxisExtent: containerHeight, // Ajusta la altura máxima de cada contenedor
+          mainAxisSpacing: spacing,
+          crossAxisSpacing: spacing,
+          childAspectRatio: containerWidth / containerHeight, // Ajusta la relación de aspecto según tus necesidades
+        ),
+        itemCount: pageItems.length,
+        itemBuilder: (context, index) {
+          return pageItems[index];
+        },
+      );
+    }
+  },
+);
   }
-}
-
-
 
   void _previousPage() {
     if (_currentPage > 0) {
@@ -145,7 +168,7 @@ void _buildPageItems() {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: color1,
-         leading:
+        leading:
             Flexible(flex: 1, child: Image.asset("assets/images/logo.png")),
         title: const Text('    L.E.A.R.N.S   ESPOCH'),
         actions: [
@@ -204,7 +227,7 @@ void _buildPageItems() {
                       },
                       child: const Text('Informática y electrónica'),
                     ),
-                   PopupMenuItem(
+                    PopupMenuItem(
                       value: 2,
                       onTap: () {
                         // Lógica para manejar la selección de "Informática y electrónica"
@@ -262,7 +285,7 @@ void _buildPageItems() {
       ),
       body: Column(
         children: <Widget>[
-          const SizedBox(height: 40),
+          const SizedBox(height: 20),
           const Align(
             alignment: Alignment.topLeft,
             child: Text(
@@ -270,11 +293,10 @@ void _buildPageItems() {
               style: TextStyle(fontSize: 24),
             ),
           ),
-          const SizedBox(height: 70),
+          const SizedBox(height: 20),
 
           ////aqui se ponen los repositorios ahora esta solo creandose aleatoriamente pero deberia ir con una base de datos
-          SizedBox(
-            height: 250,
+          Expanded(
             child: PageView(
               controller: _pageController,
               scrollDirection: Axis.horizontal,
@@ -283,13 +305,12 @@ void _buildPageItems() {
                   _currentPage = page;
                 });
               },
-              children: _pageItems,
+              children: [_buildPageItems()],
             ),
           ),
-
-          
         ],
       ),
+      
       bottomNavigationBar: Container(
         height: 110.0,
         color: Colors.grey,
@@ -325,17 +346,18 @@ void _buildPageItems() {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-        Padding(
-      padding: const EdgeInsets.only(left: 10.0), // Ajusta el espaciado aquí
-      child: IconButton(
-        onPressed: _previousPage,
-        icon: const Icon(Icons.arrow_back),
-      ),
-    ),
-    IconButton(
-      onPressed: _nextPage,
-      icon: const Icon(Icons.arrow_forward),
-    ),
+          Padding(
+            padding:
+                const EdgeInsets.only(left: 10.0), // Ajusta el espaciado aquí
+            child: IconButton(
+              onPressed: _previousPage,
+              icon: const Icon(Icons.arrow_back),
+            ),
+          ),
+          IconButton(
+            onPressed: _nextPage,
+            icon: const Icon(Icons.arrow_forward),
+          ),
         ],
       ),
     );
