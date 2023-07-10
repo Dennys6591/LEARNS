@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:learns/constantes.dart';
+import 'package:learns/vistas/inicioUserLogeado.dart';
+
+import 'inicio.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const MyAppBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -11,117 +16,121 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Flexible(flex: 1, child: Image.asset("assets/images/logo.png")),
       ),
       title: const Text('    L.E.A.R.N.S   ESPOCH'),
-    actions: [
-          Flexible(
-            flex: 1,
-            child: MaterialButton(
-              onPressed: () {},
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                    20.0), // Ajusta el radio de borde según sea necesario
-              ),
-              child:
-                  const Text('Inicio', style: TextStyle(color: Colors.white)),
-            ),
-          ),
-          Flexible(
-            flex: 1,
-            child: MaterialButton(
-              onPressed: () async {
-                final RenderBox button =
-                    context.findRenderObject() as RenderBox;
-                final RenderBox overlay =
-                    Overlay.of(context).context.findRenderObject() as RenderBox;
-                final Offset buttonTopLeft =
-                    button.localToGlobal(Offset.zero, ancestor: overlay);
-                final Offset buttonBottomRight = button.localToGlobal(
-                    button.size.bottomRight(Offset.zero),
-                    ancestor: overlay);
-                final double screenWidth = MediaQuery.of(context).size.width;
-                final double dx = screenWidth; // Ajusta según sea necesario
-                final Offset newTopLeft =
-                    Offset(buttonTopLeft.dx + dx, buttonTopLeft.dy);
-                final Offset newBottomRight =
-                    Offset(buttonBottomRight.dx + dx, buttonBottomRight.dy);
-
-                final RelativeRect position = RelativeRect.fromRect(
-                  Rect.fromPoints(newTopLeft, newBottomRight),
-                  Offset.zero & overlay.size,
-                );
-
-                await showMenu(
-                  context: context,
-                  position: position,
-                  items: [
-                    PopupMenuItem(
-                      value: 1,
-                      onTap: () {
-                        // Lógica para manejar la selección de "Todos"
-                      },
-                      child: const Text('Todos'),
-                    ),
-                    PopupMenuItem(
-                      value: 2,
-                      onTap: () {
-                        // Lógica para manejar la selección de "Informática y electrónica"
-                      },
-                      child: const Text('Informática y electrónica'),
-                    ),
-                    PopupMenuItem(
-                      value: 2,
-                      onTap: () {
-                        // Lógica para manejar la selección de "Informática y electrónica"
-                      },
-                      child: const Text('Mecánica'),
-                    ),
-                    // Agrega más opciones de menú según tus necesidades
-                  ],
-                );
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                    20.0), // Ajusta el radio de borde según sea necesario
-              ),
-              child: const Text('Recursos\ninstitucionales',
-                  style: TextStyle(fontSize: 10.0,color: Colors.white)),
-            ),
-          ),
-          Flexible(
-            flex: 1,
-            child: MaterialButton(
-              onPressed: () {},
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                    20.0), // Ajusta el radio de borde según sea necesario
-              ),
-              child: const Text('Recursos\n abiertos',
-                  style: TextStyle(color: Colors.white)),
-            ),
-          ),
-          FloatingActionButton(
+      actions: [
+        Flexible(
+          flex: 1,
+          child: MaterialButton(
             onPressed: () {
-              // Acción del botón
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => const InicioPage())));
             },
-            backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-            elevation: 50.0,
-            child: const Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.person_2_outlined,
-                    color: Color.fromARGB(255, 255, 255, 255)),
-                SizedBox(
-                    height: 4.0), // Espacio vertical entre el icono y el texto
-                Text(
-                  'Iniciar\nsesión',
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                  20.0), // Ajusta el radio de borde según sea necesario
             ),
-          )
-        ],
+            child: const Text('Inicio', style: TextStyle(color: Colors.white)),
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: MaterialButton(
+            onPressed: () async {
+              final RenderBox button = context.findRenderObject() as RenderBox;
+              final RenderBox overlay =
+                  Overlay.of(context).context.findRenderObject() as RenderBox;
+              final Offset buttonTopLeft =
+                  button.localToGlobal(Offset.zero, ancestor: overlay);
+              final Offset buttonBottomRight = button.localToGlobal(
+                  button.size.bottomRight(Offset.zero),
+                  ancestor: overlay);
+              final double screenWidth = MediaQuery.of(context).size.width;
+              final double dx = screenWidth; // Ajusta según sea necesario
+              final Offset newTopLeft =
+                  Offset(buttonTopLeft.dx + dx, buttonTopLeft.dy);
+              final Offset newBottomRight =
+                  Offset(buttonBottomRight.dx + dx, buttonBottomRight.dy);
+
+              final RelativeRect position = RelativeRect.fromRect(
+                Rect.fromPoints(newTopLeft, newBottomRight),
+                Offset.zero & overlay.size,
+              );
+
+              await showMenu(
+                context: context,
+                position: position,
+                items: [
+                  PopupMenuItem(
+                    value: 1,
+                    onTap: () {
+                      // Lógica para manejar la selección de "Todos"
+                    },
+                    child: const Text('Todos'),
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    onTap: () {
+                      // Lógica para manejar la selección de "Informática y electrónica"
+                    },
+                    child: const Text('Informática y electrónica'),
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    onTap: () {
+                      // Lógica para manejar la selección de "Informática y electrónica"
+                    },
+                    child: const Text('Mecánica'),
+                  ),
+                  // Agrega más opciones de menú según tus necesidades
+                ],
+              );
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                  20.0), // Ajusta el radio de borde según sea necesario
+            ),
+            child: const Text('Recursos\ninstitucionales',
+                style: TextStyle(fontSize: 10.0, color: Colors.white)),
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: MaterialButton(
+            onPressed: () {},
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                  20.0), // Ajusta el radio de borde según sea necesario
+            ),
+            child: const Text('Recursos\n abiertos',
+                style: TextStyle(color: Colors.white)),
+          ),
+        ),
+        FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => InicioLogeadoPage()));
+          },
+          backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+          elevation: 50.0,
+          child: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.person_2_outlined,
+                  color: Color.fromARGB(255, 255, 255, 255)),
+              SizedBox(
+                  height: 4.0), // Espacio vertical entre el icono y el texto
+              Text(
+                'Iniciar\nsesión',
+                style: TextStyle(
+                  fontSize: 12.0,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 
@@ -131,15 +140,16 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 /////////////////// flooter
 
-
 class MyBottomNavigationBar extends StatelessWidget {
+  const MyBottomNavigationBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 70.0,
       color: Colors.grey,
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
+      child: const Padding(
+        padding: EdgeInsets.all(5.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

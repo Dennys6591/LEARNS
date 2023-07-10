@@ -1,25 +1,25 @@
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:learns/vistas/crearRepositorio.dart';
 
 import 'package:learns/vistas/repositorio.dart';
 import 'package:learns/vistas/reutilizables.dart';
 
-class InicioPage extends StatefulWidget {
-  const InicioPage({Key? key}) : super(key: key);
+class InicioLogeadoPage extends StatefulWidget {
+  const InicioLogeadoPage({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _InicioPageState createState() => _InicioPageState();
+  _InicioLogeadoPageState createState() => _InicioLogeadoPageState();
 }
 
-class _InicioPageState extends State<InicioPage> {
+class _InicioLogeadoPageState extends State<InicioLogeadoPage> {
   late PageController _pageController;
   int _currentPage = 0;
   final List<Widget> _pageItems = [];
-  
-  double containerHeight = 250.0; 
-  
+
+  double containerHeight = 250.0;
+
   // Cantidad de recursos que deseas mostrar
   @override
   void initState() {
@@ -43,7 +43,6 @@ class _InicioPageState extends State<InicioPage> {
   Widget _buildPageItems() {
     const int itemsPerPage = 6; // Cantidad de contenedores por página
     const int totalItems = 15; // Total de contenedores en tu lista
-   
 
     List<Widget> pageItems = [];
 
@@ -55,7 +54,7 @@ class _InicioPageState extends State<InicioPage> {
           Color randomColor = const Color.fromARGB(255, 149, 148, 148);
 
           page.add(
-              GestureDetector(
+            GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
@@ -64,8 +63,8 @@ class _InicioPageState extends State<InicioPage> {
                   ),
                 );
               },
-            child:Container(
-              color: randomColor,
+              child: Container(
+                color: randomColor,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -121,7 +120,7 @@ class _InicioPageState extends State<InicioPage> {
               (maxWidth - (columns - 1) * spacing) / columns;
           double containerHeight =
               250.0; // Ajusta la altura máxima de los contenedores según tus necesidades
-         
+
           return GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -183,38 +182,91 @@ class _InicioPageState extends State<InicioPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            const SizedBox(height: 10),
-            const Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                'Recursos mas populares',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            const SizedBox(height: 5),
-      
-            ////aqui se ponen los repositorios ahora esta solo creandose aleatoriamente pero deberia ir con una base de datos
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                scrollDirection: Axis.horizontal,
-                onPageChanged: (int page) {
-                  setState(() {
-                    _currentPage = page;
-                  });
-                },
-                children: [_buildPageItems()],
-              ),
-            ),
-          ],
+    body: Padding(
+  padding: const EdgeInsets.all(8.0),
+  child: Column(
+    children: <Widget>[
+      const SizedBox(height: 10),
+      const Align(
+        alignment: Alignment.topLeft,
+        child: Text(
+          'Recursos mas populares',
+          style: TextStyle(fontSize: 18),
         ),
       ),
+      const SizedBox(height: 15),
+      Row(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: '   Buscar',
+                    border: InputBorder.none,
+                   
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            color: Color.fromARGB(255, 25, 182, 33),
+            child: IconButton(
+              onPressed: () {
+                // Lógica para manejar la acción del botón de búsqueda
+              },
+              icon: Icon(
+                Icons.search,
+                size: 24,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 10),
+      Container(
+        color: Color.fromARGB(255, 25, 182, 33),
+        child: IconButton(
+          onPressed: () {
+            // Lógica para manejar la acción del botón "+"
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CrearRepositorio()),
+            );
+          },
+          icon: Icon(
+            Icons.add,
+            size: 24,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      const SizedBox(height: 10),
+      ////aqui se ponen los repositorios ahora esta solo creandose aleatoriamente pero deberia ir con una base de datos
+      Expanded(
+        child: PageView(
+          controller: _pageController,
+          scrollDirection: Axis.horizontal,
+          onPageChanged: (int page) {
+            setState(() {
+              _currentPage = page;
+            });
+          },
+          children: [_buildPageItems()],
+        ),
+      ),
+    ],
+  ),
+),
 
-  ////footer
+      ////footer
       bottomNavigationBar: MyBottomNavigationBar(),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
